@@ -36,10 +36,10 @@ const server = http.createServer((req, res) => {
                         "msg": "新增成功"
                     }));
                 }else{
-                    errHandle(res,headers);
+                    errHandle(res,headers,"欄位輸入錯誤");
                 }
             }catch(err){
-                errHandle(res,headers);
+                errHandle(res,headers,"參數欄位輸入錯誤");
             }
         });
     }else if(req.url.startsWith("/todos/") && req.method == "PATCH"){
@@ -56,10 +56,10 @@ const server = http.createServer((req, res) => {
                         "msg": "編輯成功"
                     }));
                 }else{
-                    errHandle(res,headers);
+                    errHandle(res,headers,"輸入錯誤或查無此ID");
                 }
             }catch(err){
-                errHandle(res,headers);
+                errHandle(res,headers,"參數輸入錯誤");
             }
          })
     }else if(req.url=="/" && req.method == "DELETE"){
@@ -67,24 +67,20 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, headers);
         res.end(JSON.stringify({
             "status": "success",
-            "msg": "代辦清單清空成功"
+            "msg": "已清除所有代辦清單"
         }));
     }else if(req.url.startsWith("/todos/") && req.method == "DELETE"){
-        try{
-            const id = req.url.split("/").pop();
-            const ind = todos.findIndex(item=>item.id == id);
-            if(ind !== -1){
-                todos.splice(ind,1);
-                res.writeHead(200, headers);
-                res.end(JSON.stringify({
-                    "status": "success",
-                    "msg": "刪除成功"
-                }));
-            }else{
-                errHandle(res,headers);
-            }
-        }catch(err){
-            errHandle(res,headers);
+        const id = req.url.split("/").pop();
+        const ind = todos.findIndex(item=>item.id == id);
+        if(ind !== -1){
+            todos.splice(ind,1);
+            res.writeHead(200, headers);
+            res.end(JSON.stringify({
+                "status": "success",
+                "msg": "刪除成功"
+            }));
+        }else{
+            errHandle(res,headers,"查無此ID");
         }
     }else if(req.method == "OPTIONS"){
         res.writeHead(200, headers);
@@ -93,7 +89,7 @@ const server = http.createServer((req, res) => {
         res.writeHead(404, headers);
         res.end(JSON.stringify({
             "status": "false",
-            "msg": "無此路由"
+            "msg": "OOPS！跑錯地方了！"
         }))
     }
 });

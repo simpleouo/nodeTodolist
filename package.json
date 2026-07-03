@@ -1,0 +1,19 @@
+{
+  "name": "review-todolist",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "simple",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "uuid": "^14.0.1"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}
